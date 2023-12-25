@@ -1,0 +1,42 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+public class NewBehaviourScript : MonoBehaviour
+{
+    public float speed;
+    public float changeDuration;
+    public string sceneName;
+
+    // Update is called once per frame
+    void Update()
+    {
+        moveGameObjecct();
+    }
+
+    void moveGameObjecct()
+    {
+        float xinput = Input.GetAxis("Horizontal");
+        float yinput = Input.GetAxis("Vertical");
+
+        Vector3 vec = new Vector3(xinput, yinput, 0);
+        transform.Translate(vec * speed * Time.deltaTime);
+    }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("floor"))
+        {
+            StartCoroutine(IncreaseSpeedAndDelay());
+        }
+    }
+
+    IEnumerator IncreaseSpeedAndDelay()
+    {
+        yield return new WaitForSeconds(changeDuration);
+        SceneManager.LoadScene("new");
+
+
+    }
+
+
+}
